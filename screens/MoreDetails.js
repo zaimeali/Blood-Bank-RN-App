@@ -11,6 +11,10 @@ import { BLOOD_TYPE, BLOOD_LEVEL } from '../static/bloodTypes'
 // Firebase
 import firebase from 'firebase'
 
+// Redux
+import { useDispatch } from 'react-redux'
+import { registerSuccess, setUID } from './../redux/userReducer'
+
 
 export default function MoreDetails({ navigation }) {
 
@@ -20,8 +24,6 @@ export default function MoreDetails({ navigation }) {
     const [errBloodType, setErrBloodType] = useState("")
     const [errBloodLevel, setErrBloodLevel] = useState("")
 
-    const [bloodMerge, setBloodMerge] = useState("")
-
     const [user, setUser] = useState({})
 
     useEffect(() => { 
@@ -30,10 +32,9 @@ export default function MoreDetails({ navigation }) {
         })
         return subscriber
     }, [])
-    
-    // console.log(user.email)
-    // console.log(user.displayName)
-    // console.log(user.uid)
+
+    const dispatch = useDispatch()
+
 
     const registerUser = async () => {
 
@@ -45,19 +46,24 @@ export default function MoreDetails({ navigation }) {
         }
 
         if(bloodLevel.length > 0 && bloodType.length > 0) {
-            // console.log(bloodLevel)
-            // console.log(bloodType)
-
-            // console.log(`${bloodType}${bloodLevel}`)
             
             await firebase.firestore()
                 .collection("users")
-                .add({
+                .doc(user.uid)
+                .set({
                     email: user.email,
                     name: user.displayName,
                     uid: user.uid,
                     bloodType: `${bloodType}${bloodLevel}`,
                 })
+                .then(() => {
+                    dispatch(registerSuccess(user.displayName))
+                    dispatch(setUID(user.uid))
+                })
+                .catch(err => Alert.alert(
+                    "",
+                    `${ err.message }`
+                ))
 
         }
 
