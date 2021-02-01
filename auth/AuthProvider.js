@@ -1,16 +1,18 @@
-import React, { useState } from 'react'
+import React from 'react'
+
+// Context
 import { AuthContext } from './context'
+
+// Async Storage
+// import AsyncStorage from '@react-native-community/async-storage'
 
 // Firebase
 import firebase from 'firebase'
 
+
 export default function AuthProvider({ children }) {
 
-    const [user, setUser] = useState(null)
-
     const defValue = {
-        user, 
-        setUser,
         login: async (email, password) => {
             firebase
                 .auth()

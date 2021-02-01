@@ -1,16 +1,20 @@
 // React
-import React from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 
 // Navigation
 import { NavigationContainer } from '@react-navigation/native'
 import AuthStack from './navigation/AuthStack'
+import RootStack from './navigation/RootStack'
+
+// Async Storage
+import AsyncStorage from '@react-native-community/async-storage'
 
 // Firebase
 import * as firebase from 'firebase'
 import { firebaseConfig } from './auth/firebase'
 
 // Context
-import AuthProvider from './auth/AuthProvider'
+// import AuthProvider from './auth/AuthProvider'
 
 // Initialize Firebase
 if(firebase.apps.length === 0) {
@@ -18,60 +22,40 @@ if(firebase.apps.length === 0) {
 }
 
 
-// // Root Stack
-// const RootStack = createStackNavigator()
-// const RootStackScreen = ({ userToken }) => (
-//   <RootStack.Navigator
-//     headerMode="none"
-//   >
-//     {
-//       userToken ? (
-//         <RootStack.Screen 
-//           name="Home"
-//           component={ LandingStackScreen }
-//         />
-//       ) : (
-//         <RootStack.Screen 
-//           name="Auth"
-//           component={ LandingStackScreen }
-//         />
-//       )
-//     }
-//   </RootStack.Navigator>
-// )
-
 
 export default function App() {
 
-  // const [userToken, setUserToken] = useState(null)
+  // const { user, setUser } = useContext(AuthContext)
+  const [user, setUser] = useState(false)
+  // const { authUser } = useContext(AuthContext)
 
-  // const authContext = useMemo(() => {
-  //   return {
-  //     signIn: () => {
-  //       setUserToken("LOGGED-IN")
-  //     },
-  //     signUp: () => {
-  //       setUserToken("LOGGED-IN")
-  //     },
-  //     signOut: () => {
-  //       setUserToken(null)
-  //     }
-  //   }
-  // }, [])
+  // console.log(authUser)
+
+  // const onAuthStateChanged = (user) => {
+  //   setUser(user)
+  // }
+
+  useEffect(() => { 
+    const subscriber = firebase.auth().onAuthStateChanged((authUser) => {
+      console.log(authUser)
+      // if(authUser?.uid) {
+      //   // console.log(authUser.uid)
+      //   // setUser(authUser.uid)
+      //   setUser(false)
+      // }
+    })
+    return subscriber
+  }, [])
 
   return (
-    // <AuthContext.Provider
-    //   value={ authContext }
-    // >
-    //   <NavigationContainer>
-    //     <RootStackScreen userToken={ userToken } />
-    //   </NavigationContainer>
-    // </AuthContext.Provider>
-
-    <AuthProvider>
-      <NavigationContainer>
-        <AuthStack />
-      </NavigationContainer>
-    </AuthProvider>
+    <NavigationContainer>
+      {
+        user ? (
+          <RootStack />
+        ) : (
+          <AuthStack />
+        )
+      }
+    </NavigationContainer>
   )
 }

@@ -82,6 +82,15 @@ export const authScreenStyles = StyleSheet.create({
         paddingVertical: 10,
         marginVertical: 10,
     },
+    errDefaultField: {
+        width: WIDTH * 0.75,
+        borderRadius: 60,
+        borderWidth: 2,
+        borderColor: "#f00",
+        paddingHorizontal: 15,
+        paddingVertical: 10,
+        marginVertical: 10,
+    },
     navigationContainer: {
         position: "absolute",
         bottom: 20,
@@ -92,7 +101,7 @@ export const authScreenStyles = StyleSheet.create({
     defaultBtn: {
         backgroundColor: "#da2f47",
         alignSelf: "center",
-        paddingHorizontal: 20,
+        paddingHorizontal: 25,
         paddingVertical: 10,
         borderRadius: 5,
         marginVertical: 10,
