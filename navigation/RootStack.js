@@ -8,7 +8,9 @@ const Stack = createStackNavigator()
 
 export default function RootStack() {
     return (
-        <Stack.Navigator>
+        <Stack.Navigator
+            headerMode="none"
+        >
             <Stack.Screen 
                 name="Home"
                 component={ HomeScreen }

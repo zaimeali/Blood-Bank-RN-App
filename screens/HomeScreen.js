@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react'
-import { View, Text } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { View, Text, SafeAreaView, Modal } from 'react-native'
 
 import { homeScreenStyles as styles } from '../styles/style'
 
@@ -17,15 +17,19 @@ import { DONOR } from './../static/bloodTypes'
 import BloodType from '../components/BloodType'
 import Donate from '../components/Donate'
 import Receive from '../components/Receive'
+import Header from '../components/Header'
+import ModalHeader from '../components/ModalHeader'
 
 
 export default function HomeScreen() {
 
-    const { uid, userDetail } = useSelector(state => state.user)
+    const [isModal, setIsModal] = useState(false)
+
+    const { uid, userDetail, user } = useSelector(state => state.user)
     const dispatch = useDispatch()
 
     useEffect(() => {
-        if(uid.length > 0) {
+        if(uid?.length > 0) {
             const docRef = firebase.firestore()
             .collection("users")
             .doc(uid)
@@ -42,16 +46,28 @@ export default function HomeScreen() {
         } 
     }, [])
 
-    console.log(userDetail)
-    console.log(DONOR[userDetail.bloodType])
+    // console.log(userDetail)
+    // console.log(DONOR[userDetail.bloodType])
 
     return (
-        <View style={{
+        <SafeAreaView style={{
             flex: 1,
         }}>
-            <BloodType bloodType={ userDetail.bloodType } />
-            <Donate donateType={ DONOR[userDetail.bloodType] } />
-            <Receive receiveType={ DONOR[userDetail.bloodType] } />
-        </View>
+            <Header isModal={ isModal } setIsModal={ setIsModal } userName={ user.length > 0 ? user : "E" } />
+            <View style={{
+                opacity: isModal ? 0.3 : 1,
+            }}>
+                <BloodType bloodType={ userDetail.bloodType } />
+                <Donate donateType={ DONOR[userDetail.bloodType] } />
+                <Receive receiveType={ DONOR[userDetail.bloodType] } />
+            </View>
+
+            {
+                isModal && (
+                    <ModalHeader isModal={ isModal } setIsModal={ setIsModal } />
+                )
+            }
+
+        </SafeAreaView>
     )
 }

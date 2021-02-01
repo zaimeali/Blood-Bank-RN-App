@@ -13,7 +13,7 @@ export default function AuthStack() {
     return (
         <Stack.Navigator
             headerMode="none"
-            initialRouteName="Detail"
+            initialRouteName="Landing"
         >
             <Stack.Screen 
                 name="Landing"
