@@ -1,5 +1,5 @@
 import React, { useEffect, useState, Fragment } from 'react'
-import { View, Text, SafeAreaView, Modal, ActivityIndicator } from 'react-native'
+import { View, Text, SafeAreaView, Modal, ActivityIndicator, ScrollView } from 'react-native'
 
 import { homeScreenStyles as styles } from '../styles/style'
 
@@ -19,6 +19,8 @@ import Donate from '../components/Donate'
 import Receive from '../components/Receive'
 import Header from '../components/Header'
 import ModalHeader from '../components/ModalHeader'
+import YourPoints from '../components/YourPoints'
+import History from '../components/History'
 
 
 export default function HomeScreen() {
@@ -69,13 +71,15 @@ export default function HomeScreen() {
                 ) : (
                     <Fragment>
                         <Header isModal={ isModal } setIsModal={ setIsModal } userName={ user.length > 0 ? user : "E" } />
-                        <View style={{
+                        <ScrollView style={{
                             opacity: isModal ? 0.3 : 1,
                         }}>
+                            <YourPoints userID={ uid } />
                             <BloodType bloodType={ userDetail.bloodType } />
                             <Donate donateType={ DONOR[userDetail.bloodType] } />
                             <Receive receiveType={ RECEIVER[userDetail.bloodType] } />
-                        </View>
+                            <History userID={ uid } />
+                        </ScrollView>
 
                         {
                             isModal && (
