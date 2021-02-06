@@ -85,7 +85,7 @@ export default function History({ userID }) {
                                         }}
                                         onPress={ () => Alert.alert(
                                             "Blood Donate Detail",
-                                            `Blood Type: ${ item.bloodType }\nAmount: ${ item.amount_of_blood } Litre\nFrom: ${ item.to_person }\nDate: ${ item.date }\nTime: ${item.time}`
+                                            `Blood Type: ${ item.bloodType }\nAmount: ${ item.amount_of_blood } Litre\nReceiver: ${ item.to_person }\nDate: ${ item.date }\nTime: ${item.time}`
                                         ) }
                                     >
                                         <Image 
@@ -122,7 +122,7 @@ export default function History({ userID }) {
                     // Object.keys(received).length 
                     received.length ? (
                         <FlatList 
-                            data={ received }
+                            data={ received.slice(0).reverse() }
                             keyExtractor={({  }, index) => `received-${index}`}
                             horizontal={ true }
                             style={{
@@ -144,7 +144,7 @@ export default function History({ userID }) {
                                         }}
                                         onPress={ () => Alert.alert(
                                             "Blood Receive Detail",
-                                            `Blood Type: ${ item.bloodType }\nAmount: ${ item.amount_of_blood } Litre\nFrom: ${ item.to_person }\nDate: ${ item.date }\nTime: ${item.time}`
+                                            `Blood Type: ${ item.bloodType }\nAmount: ${ item.amount_of_blood } Litre\nDonor: ${ item.donor }\nDate: ${ item.date }\nTime: ${item.time}`
                                         ) }
                                     >
                                         <Image 

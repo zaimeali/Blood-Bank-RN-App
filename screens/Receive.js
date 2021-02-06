@@ -107,7 +107,7 @@ export default function Receive({ navigation, route }) {
                     fontSize: 20,
                     fontWeight: "700",
                     color: "#da2f47",
-                }}>Receiver</Text>
+                }}>Receiving Blood From</Text>
                 <Form>
                     <Item inlineLabel disabled style={{
                         backgroundColor: "#EBEBE4"
