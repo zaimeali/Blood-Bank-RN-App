@@ -8,6 +8,9 @@ import { useSelector } from 'react-redux'
 import Header from '../components/Header'
 import ModalHeader from '../components/ModalHeader'
 
+// Firebase
+import firebase from 'firebase'
+
 
 export default function Receive({ navigation }) {
 

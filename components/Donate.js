@@ -63,7 +63,9 @@ export default function Donate({ donateType, navigation }) {
                                     marginRight: 10,
                                     borderRadius: 5,
                                 }}
-                                onPress={() => navigation.navigate("Donate")}
+                                onPress={() => navigation.navigate("Donate", {
+                                    bloodType: item
+                                })}
                             >
                                 <Image 
                                     source={ BLOOD_TYPE_ICON[`${item}`] }

@@ -52,25 +52,25 @@ export default function History({ userID }) {
     //     const registerPoints = async () => {
     //         await firebase.firestore()
     //             .collection("donated")
-    //             .doc(userID)
-    //             .set({
-    //                 donated: [
-    //                     {
-    //                         "bloodType": "",
-    //                         "time": "",
-    //                         "date": "",
-    //                         "to_person": "",
-    //                         "amount_of_blood": "",
-    //                     }
-    //                 ],
-    //             })
-    //             .then(() => {
-    //                 console.log("nice")
-    //             })
-    //             .catch(err => Alert.alert(
-    //                 "",
-    //                 `${ err.message }`
-    //             )) 
+                // .doc(userID)
+                // .set({
+                //     donated: [
+                //         {
+                //             "bloodType": "",
+                //             "time": "",
+                //             "date": "",
+                //             "to_person": "",
+                //             "amount_of_blood": "",
+                //         }
+                //     ],
+                // })
+                // .then(() => {
+                //     console.log("nice")
+                // })
+                // .catch(err => Alert.alert(
+                //     "",
+                //     `${ err.message }`
+                // )) 
     //         await firebase.firestore()
     //             .collection("received")
     //             .doc(userID)
