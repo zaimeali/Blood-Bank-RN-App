@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, FlatList, Pressable, Image } from 'react-native'
 import HR from './HR'
 
-export default function Receive({ receiveType }) {
+export default function Receive({ receiveType, navigation }) {
     
     const BLOOD_TYPE_ICON = {
         "O+": require("./../assets/blood_icons/Opos.png"),
@@ -59,6 +59,7 @@ export default function Receive({ receiveType }) {
                                     marginRight: 10,
                                     borderRadius: 5,
                                 }}
+                                onPress={() => navigation.navigate("Receive")}
                             >
                                 <Image 
                                     source={ BLOOD_TYPE_ICON[`${item}`] }

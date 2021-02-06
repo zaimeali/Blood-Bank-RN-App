@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, FlatList, Pressable, Image } from 'react-native'
 import HR from './HR'
 
-export default function Donate({ donateType }) {
+export default function Donate({ donateType, navigation }) {
 
     
     const BLOOD_TYPE_ICON = {
@@ -63,6 +63,7 @@ export default function Donate({ donateType }) {
                                     marginRight: 10,
                                     borderRadius: 5,
                                 }}
+                                onPress={() => navigation.navigate("Donate")}
                             >
                                 <Image 
                                     source={ BLOOD_TYPE_ICON[`${item}`] }

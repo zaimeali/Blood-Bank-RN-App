@@ -23,7 +23,7 @@ import YourPoints from '../components/YourPoints'
 import History from '../components/History'
 
 
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }) {
 
     const [isModal, setIsModal] = useState(false)
     const [loading, setLoading] = useState(false)
@@ -76,8 +76,8 @@ export default function HomeScreen() {
                         }}>
                             <YourPoints userID={ uid } />
                             <BloodType bloodType={ userDetail.bloodType } />
-                            <Donate donateType={ DONOR[userDetail.bloodType] } />
-                            <Receive receiveType={ RECEIVER[userDetail.bloodType] } />
+                            <Donate donateType={ DONOR[userDetail.bloodType] } navigation={ navigation } />
+                            <Receive receiveType={ RECEIVER[userDetail.bloodType] } navigation={ navigation } />
                             <History userID={ uid } />
                         </ScrollView>
 
