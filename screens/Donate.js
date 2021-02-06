@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import { View, Text, SafeAreaView, Alert } from 'react-native'
 
 // Redux
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { setUserPoints, updateDonation } from '../redux/userReducer'
 
 // Component
 import ModalHeader from '../components/ModalHeader'
@@ -21,16 +22,16 @@ import moment from 'moment'
 export default function Donate({ navigation, route }) {
 
     const [isModal, setIsModal] = useState(false)
-
-    const [donated, setDonated] = useState([])
-    const [totalPoint, setTotalPoint] = useState(0)
     
     const [amount, setAmount] = useState(0)
     const [donatingTo, setDonatingTo] = useState("")
     
-    const { user, uid } = useSelector(state => state.user)
+    const { user, uid, points } = useSelector(state => state.user)
 
     const { bloodType } = route.params
+
+    const dispatch = useDispatch()
+    const { donated } = useSelector(state => state.user)
 
     const submitValue = async () => {
         if(donatingTo.length <= 0) {
@@ -61,98 +62,32 @@ export default function Donate({ navigation, route }) {
                 "amount_of_blood": amount,
                 "by_person": user
             }
-            console.log(newDonation)
 
             await firebase.firestore()
-                .collection('points')
+                .collection("points")
                 .doc(uid)
-                .get()
-                .then(doc => {
-                    if(doc.exists) {
-                        console.log(doc.data())
-                    }
+                .set({
+                    point: points + 1,
                 })
-                .catch(err => console.error(err))
+                .then(() => {
+                    console.log("Successfully Point Increased")
+                    dispatch(setUserPoints(points + 1))
 
-            // const docRef = firebase.firestore()
-            //     .collection('donated')
-            //     .doc(uid)
-            //     .get()
-            //     .then(doc => {
-            //         firebase.firestore()
-            //             .collection('points')
-            //             .doc(uid)
-            //             .get()
-            //             .then(doc => {
-            //                 if(doc.exists) {
-            //                     setTotalPoint(doc.data().point + 1)
-            //                     // firebase.firestore()
-            //                     //     .collection("points")
-            //                     //     .doc(uid)
-            //                     //     .set({
-            //                     //         point: totalPoint
-            //                     //     })
-            //                     //     .then(() => {
-            //                     //         console.log("Point Increased")
-            //                     //     })
-            //                     //     .catch(err => Alert.alert(
-            //                     //         "",
-            //                     //         `${ err.message }`
-            //                     //     )) 
-            //                 }
-            //             })
-            //             .catch(err => console.error(err.message)) 
-            //         }
-            //     )
-            //     .catch(err => console.error(err.message)) 
-            // }
+                    firebase.firestore()
+                        .collection("donated")
+                        .doc(uid)
+                        .set({
+                            donated: [...donated, newDonation]
+                        })
+                        .then(() => {
+                            dispatch(updateDonation(newDonation))
+                            console.log("Successfully Donation Added")
+                            navigation.navigate("Home")
+                        })
+                        .catch(err => console.error(err.message))
+                })
+                .catch(err => console.error(err.message))
 
-            //         // if(doc.exists) {
-            //         //     setDonated(doc.data().donated)
-            //         // } else {
-            //         //     firebase.firestore()
-            //         //         .collection("donated")
-            //         //         .doc(uid)
-            //         //         .set({
-            //         //             donated: [
-            //         //                 newDonation,
-            //         //             ],
-            //         //         })
-            //         //         .then(() => {
-            //         //             Alert.alert(
-            //         //                 "",
-            //         //                 "Successfully Donated"
-            //         //             )
-            //         //             navigation.navigate("Home")
-            //         //         })
-            //         //         .catch(err => Alert.alert(
-            //         //             "",
-            //         //             `${ err.message }`
-            //         //         )) 
-            //         // }
-            //     })
-            //     .catch(err => console.error(err.message)) 
-            // await firebase.firestore()
-            //     .collection("donated")
-            //     .doc(uid)
-            //     .set({
-            //         donated: [
-            //             {
-            //                 "bloodType": "",
-            //                 "time": "",
-            //                 "date": "",
-            //                 "to_person": "",
-            //                 "amount_of_blood": "",
-            //             }
-            //         ],
-            //     })
-            //     .then(() => {
-            //         console.log("nice")
-            //     })
-            //     .catch(err => Alert.alert(
-            //         "",
-            //         `${ err.message }`
-            //     )) 
         }
     }
 

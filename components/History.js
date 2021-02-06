@@ -4,11 +4,13 @@ import { View, Text, FlatList, Pressable, Image, Alert } from 'react-native'
 // Components
 import HR from './HR'
 
-// Firebase
-import firebase from 'firebase'
+// Redux
+import { useSelector } from 'react-redux'
 
 
 export default function History({ userID }) {
+
+    const { donated, received } = useSelector(state => state.user)
 
     const BLOOD_TYPE_ICON = {
         "O+": require("./../assets/blood_icons/Opos.png"),
@@ -20,80 +22,6 @@ export default function History({ userID }) {
         "AB+": require("./../assets/blood_icons/ABpos.png"),
         "AB-": require("./../assets/blood_icons/ABneg.png")
     }
-
-    const [donated, setDonated] = useState([])
-    const [received, setReceived] = useState([])
-
-    useEffect(() => {
-        if(userID?.length) {
-            const docRef1 = firebase.firestore()
-                .collection('donated')
-                .doc(userID)
-                .get()
-                .then(doc => {
-                    if(doc.exists) {
-                        setDonated(doc.data().donated)
-                    }
-                })
-                .catch(err => console.error(err.message)) 
-            const docRef2 = firebase.firestore()
-                    .collection('received')
-                    .doc(userID)
-                    .get()
-                    .then(doc => {
-                        if(doc.exists) {
-                            setReceived(doc.data().received)
-                        }
-                    })
-                    .catch(err => console.error(err.message)) 
-        }
-    }, [])
-
-    //     const registerPoints = async () => {
-    //         await firebase.firestore()
-    //             .collection("donated")
-                // .doc(userID)
-                // .set({
-                //     donated: [
-                //         {
-                //             "bloodType": "",
-                //             "time": "",
-                //             "date": "",
-                //             "to_person": "",
-                //             "amount_of_blood": "",
-                //         }
-                //     ],
-                // })
-                // .then(() => {
-                //     console.log("nice")
-                // })
-                // .catch(err => Alert.alert(
-                //     "",
-                //     `${ err.message }`
-                // )) 
-    //         await firebase.firestore()
-    //             .collection("received")
-    //             .doc(userID)
-    //             .set({
-    //                 received: [
-    //                     {
-    //                         "bloodType": "",
-    //                         "time": "",
-    //                         "date": "",
-    //                         "to_person": "",
-    //                         "amount_of_blood": "",
-    //                     }
-    //                 ],
-    //             })
-    //             .then(() => {
-    //                 console.log("nice")
-    //             })
-    //             .catch(err => Alert.alert(
-    //                 "",
-    //                 `${ err.message }`
-    //             ))
-    // }
-    // registerPoints()
 
     return (
         <View style={{
@@ -134,13 +62,14 @@ export default function History({ userID }) {
                     // Object.keys(donated).length 
                     donated.length ? (   
                         <FlatList 
-                            data={ donated }
+                            data={ donated.slice(0).reverse() }
                             keyExtractor={({  }, index) => `donated-${index}`}
                             horizontal={ true }
                             style={{
                                 paddingVertical: 10,
                             }}
                             renderItem={({ item }) => {
+
                                 return (
                                     <Pressable
                                         style={{
@@ -171,7 +100,11 @@ export default function History({ userID }) {
                             }}
                         />
                     ) : (
-                        <Text>You haven't donate any blood 😟</Text>
+                        <Text style={{
+                            textAlign: "center",
+                            padding: 10,
+                            fontSize: 14,
+                        }}>You haven't donate any blood 😟</Text>
                     )
                 }
             </View>
@@ -226,7 +159,11 @@ export default function History({ userID }) {
                             }}
                         />
                     ) : (
-                        <Text>You haven't receive any blood 😀</Text>
+                        <Text style={{
+                            textAlign: "center",
+                            padding: 10,
+                            fontSize: 14,
+                        }}>You haven't receive any blood 😀</Text>
                     )
                 }
             </View>

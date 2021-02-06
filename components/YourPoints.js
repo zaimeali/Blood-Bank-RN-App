@@ -1,29 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, Pressable, Alert } from 'react-native'
 
-// Firebase
-import firebase from 'firebase'
+// Redux
+import { useSelector } from 'react-redux'
 
 
 export default function YourPoints({ userID }) {
 
-    const [totalPoints, setTotalPoints] = useState(0)
-
-
-    useEffect(() => {
-        if(userID?.length) {
-            const docRef = firebase.firestore()
-                .collection('points')
-                .doc(userID)
-                .get()
-                .then(doc => {
-                    if(doc.exists) {
-                        setTotalPoints(doc.data().point)
-                    }
-                })
-                .catch(err => console.error(err.message)) 
-        } 
-    }, [])
+    const { points } = useSelector(state => state.user)
 
     const infoPoints = () => {
         Alert.alert(
@@ -55,7 +39,7 @@ export default function YourPoints({ userID }) {
                 fontSize: 17,
                 fontWeight: "700",
                 color: "#da2f47",
-            }}>Your Total Points: { totalPoints }</Text>
+            }}>Your Total Points: { points }</Text>
             <Pressable 
                 style={{
                     position: "absolute",

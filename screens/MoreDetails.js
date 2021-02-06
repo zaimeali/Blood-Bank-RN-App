@@ -57,6 +57,39 @@ export default function MoreDetails({ navigation }) {
                     bloodType: `${bloodType}${bloodLevel}`,
                 })
                 .then(() => {
+                    firebase.firestore()
+                        .collection("points")
+                        .doc(user.uid)
+                        .set({
+                            point: 0,
+                        })
+                        .then(() => {
+                            console.log("Successfully Point Created")
+                        })
+                        .catch(err => console.error(err.message))
+
+                    firebase.firestore()
+                        .collection("donated")
+                        .doc(user.uid)
+                        .set({
+                            donated: []
+                        })
+                        .then(() => {
+                            console.log("Successfully Donated Created")
+                        })
+                        .catch(err => console.error(err.message))
+                        
+                    firebase.firestore()
+                        .collection("receiver")
+                        .doc(user.uid)
+                        .set({
+                            receiver: []
+                        })
+                        .then(() => {
+                            console.log("Successfully Received Created")
+                        })
+                        .catch(err => console.error(err.message))
+
                     dispatch(registerSuccess(user.displayName))
                     dispatch(setUID(user.uid))
                 })

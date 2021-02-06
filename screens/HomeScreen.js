@@ -8,7 +8,7 @@ import firebase from 'firebase'
 
 // Redux
 import { useSelector, useDispatch } from 'react-redux'
-import { setUserDetail } from '../redux/userReducer'
+import { setDonation, setReceiver, setUserDetail, setUserPoints } from '../redux/userReducer'
 
 // Static Data
 import { DONOR, RECEIVER } from './../static/bloodTypes'
@@ -35,7 +35,7 @@ export default function HomeScreen({ navigation }) {
         setLoading(true)
         const subscriber = firebase.auth().onAuthStateChanged((authUser) => {
             if(authUser?.uid) {
-                const docRef = firebase.firestore()
+                const userRef = firebase.firestore()
                     .collection("users")
                     .doc(authUser.uid)
                     .get()
@@ -48,6 +48,49 @@ export default function HomeScreen({ navigation }) {
                         }
                     })
                     .catch(err => console.error(err.message))
+
+                const pointRef = firebase.firestore()
+                    .collection("points")
+                    .doc(authUser.uid)
+                    .get()
+                    .then(doc => {
+                        if(doc.exists) {
+                            dispatch(setUserPoints(doc.data().point))
+                        }
+                        else {
+                            console.log("No Points Found for such user")
+                        }
+                    })
+                    .catch(err => console.error(err.message))
+
+                const donatedRef = firebase.firestore()
+                    .collection("donated")
+                    .doc(authUser.uid)
+                    .get()
+                    .then(doc => {
+                        if(doc.exists) {
+                            dispatch(setDonation(doc.data().donated))
+                        }
+                        else {
+                            console.log("No Donation Found for such user")
+                        }
+                    })
+                    .catch(err => console.error(err.message))
+
+                const receiverRef = firebase.firestore()
+                    .collection("receiver")
+                    .doc(authUser.uid)
+                    .get()
+                    .then(doc => {
+                        if(doc.exists) {
+                            dispatch(setReceiver(doc.data().receiver))
+                        }
+                        else {
+                            console.log("No Received Blood Found for such user")
+                        }
+                    })
+                    .catch(err => console.error(err.message))
+
                 setLoading(false) 
             }
         })

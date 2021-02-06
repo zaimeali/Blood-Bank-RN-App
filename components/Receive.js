@@ -59,7 +59,9 @@ export default function Receive({ receiveType, navigation }) {
                                     marginRight: 10,
                                     borderRadius: 5,
                                 }}
-                                onPress={() => navigation.navigate("Receive")}
+                                onPress={() => navigation.navigate("Receive", {
+                                    bloodType: item
+                                })}
                             >
                                 <Image 
                                     source={ BLOOD_TYPE_ICON[`${item}`] }
